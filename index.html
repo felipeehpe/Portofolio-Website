@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Felipe Ehrhardt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080808;
+  --text: #f0ece4;
+  --muted: rgba(240,236,228,0.35);
+  --c-about: #1a1a1a;
+  --a-about: #c8c0b0;
+  --c-work: #0b1a2e;
+  --a-work: #3d8bff;
+  --c-photo: #1f0f00;
+  --a-photo: #ff7a1a;
+  --c-video: #150015;
+  --a-video: #c03cff;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  width: 100%; height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  overflow: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  pointer-events: none; z-index: 9999; opacity: .45;
+}
+
+.amb { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; }
+#a1 { width: 380px; height: 280px; top: -10%; left: -15%; background: radial-gradient(ellipse, rgba(61,139,255,.08) 0%, transparent 70%); }
+#a2 { width: 300px; height: 240px; bottom: -5%; right: -10%; background: radial-gradient(ellipse, rgba(192,60,255,.07) 0%, transparent 70%); }
+
+/* HERO */
+#hero {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 50;
+  transition: opacity .6s ease, transform .6s cubic-bezier(.76,0,.24,1);
+}
+#hero.out { opacity: 0; transform: translateY(-18px); pointer-events: none; }
+
+.hero-eyebrow { display: none; }
+.hero-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 22vw, 140px);
+  line-height: .92; letter-spacing: -.01em; text-align: center;
+  opacity: 0; filter: blur(12px); transform: translateY(20px);
+  animation: nameIn 1s cubic-bezier(.34,1.4,.64,1) .5s forwards; position: relative;
+}
+.hero-name span {
+  display: block;
+  font-family: 'DM Sans', sans-serif; font-style: normal;
+  font-size: clamp(14px, 4vw, 28px); font-weight: 500;
+  letter-spacing: .24em; text-transform: uppercase;
+  color: var(--muted); margin-top: 16px;
+}
+.hero-tap {
+  margin-top: 60px; display: flex; align-items: center; gap: 8px;
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(240,236,228,.2);
+  opacity: 0; animation: fadeUp .6s ease 1.6s forwards; cursor: pointer;
+}
+.hero-tap-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(240,236,228,.25);
+  animation: pulse 2s ease-in-out infinite 2s;
+}
+
+/* HEADER */
+#header {
+  position: fixed; top: 0; left: 0; right: 0; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; z-index: 100;
+  opacity: 0; pointer-events: none; transform: translateY(-10px);
+  transition: opacity .5s ease, transform .5s ease;
+  background: linear-gradient(180deg, rgba(8,8,8,.9) 0%, transparent 100%);
+  backdrop-filter: blur(8px);
+}
+#header.on { opacity: 1; pointer-events: all; transform: translateY(0); }
+.hdr-name { font-family: 'Bebas Neue', sans-serif; font-size: clamp(20px,5vw,28px); letter-spacing: .04em; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+.hdr-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #3d8bff; box-shadow: 0 0 8px #3d8bff;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+/* CARD GRID */
+#scene {
+  position: fixed; inset: 0;
+  padding: 64px 12px 12px;
+  display: flex; flex-direction: column; gap: 10px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .5s ease .1s; overflow: hidden;
+}
+#scene.on { opacity: 1; pointer-events: all; }
+.card-row { display: flex; gap: 10px; flex: 1; min-height: 0; }
+
+.card {
+  flex: 1; border-radius: 20px;
+  position: relative; overflow: hidden; cursor: pointer;
+  opacity: 0; transform: translateY(28px) scale(.96);
+  transition: opacity .5s ease, transform .5s cubic-bezier(.34,1.5,.64,1), box-shadow .25s ease;
+  will-change: transform;
+}
+.card.in  { opacity: 1; transform: translateY(0) scale(1); }
+.card.dim { opacity: 0 !important; transform: scale(.9) !important; pointer-events: none !important; transition: opacity .3s ease, transform .3s ease !important; }
+.card:active { transform: scale(.97) !important; }
+
+/* Media layer */
+.card-media {
+  position: absolute; inset: 0; z-index: 0;
+  overflow: hidden; border-radius: inherit;
+}
+.card-media img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center top;
+  display: block;
+  transition: transform 6s ease;
+}
+.card:hover .card-media img { transform: scale(1.04); }
+
+/* YouTube iframe */
+.card-media iframe {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 200%; height: 200%;
+  transform: translate(-50%, -50%);
+  pointer-events: none; border: none;
+  opacity: .6;
+}
+
+/* Carousel */
+.carousel-inner {
+  position: absolute; inset: 0; display: flex;
+  transition: transform .9s cubic-bezier(.76,0,.24,1);
+}
+.carousel-inner img {
+  flex-shrink: 0; width: 100%; height: 100%; object-fit: cover;
+}
+
+/* Work placeholder */
+.work-lines {
+  position: absolute; inset: 0; overflow: hidden; opacity: .12;
+}
+.work-line {
+  position: absolute; left: 0; right: 0; height: 1px;
+  background: var(--a-work);
+  animation: linePulse 4s ease-in-out infinite;
+}
+@keyframes linePulse { 0%,100%{opacity:.2;transform:scaleX(.3)} 50%{opacity:1;transform:scaleX(1)} }
+
+/* Color overlay */
+.card-overlay {
+  position: absolute; inset: 0; z-index: 1; border-radius: inherit; pointer-events: none;
+}
+[data-id=about] .card-overlay { background: linear-gradient(160deg, rgba(10,10,10,.5) 0%, rgba(0,0,0,.25) 100%); }
+[data-id=work]  .card-overlay { background: linear-gradient(160deg, rgba(11,26,46,.65) 0%, rgba(0,0,0,.4) 100%); }
+[data-id=photo] .card-overlay { background: linear-gradient(160deg, rgba(31,15,0,.45) 0%, rgba(0,0,0,.25) 100%); }
+[data-id=video] .card-overlay { background: linear-gradient(160deg, rgba(21,0,21,.55) 0%, rgba(0,0,0,.35) 100%); }
+
+/* Glow */
+.card-glow {
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 2;
+}
+[data-id=about] .card-glow { background: radial-gradient(ellipse at 50% 0%, rgba(200,192,176,.12) 0%, transparent 65%); }
+[data-id=work]  .card-glow { background: radial-gradient(ellipse at 50% 0%, rgba(61,139,255,.18) 0%, transparent 65%); }
+[data-id=photo] .card-glow { background: radial-gradient(ellipse at 50% 0%, rgba(255,122,26,.16) 0%, transparent 65%); }
+[data-id=video] .card-glow { background: radial-gradient(ellipse at 50% 0%, rgba(192,60,255,.18) 0%, transparent 65%); }
+
+/* Border */
+.card::after {
+  content: ''; position: absolute; inset: 0; border-radius: 20px;
+  border: 1px solid rgba(240,236,228,.09); z-index: 7; pointer-events: none;
+}
+
+/* Card name — centered, big */
+.card-name {
+  position: absolute; inset: 0; z-index: 5;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 8px;
+}
+.card-name-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(28px, 8vw, 50px);
+  letter-spacing: .06em; line-height: 1; text-align: center;
+  color: rgba(240,236,228,.95);
+  text-shadow: 0 2px 30px rgba(0,0,0,.8), 0 0 60px rgba(0,0,0,.5);
+}
+
+/* SECTION OVERLAY */
+#ov {
+  position: fixed; inset: 0; z-index: 150;
+  opacity: 0; pointer-events: none;
+  transition: opacity .45s ease;
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+}
+#ov.on { opacity: 1; pointer-events: all; }
+
+.sec { display: none; min-height: 100vh; padding: 80px 24px 60px; }
+.sec.on { display: block; }
+
+#s-about { background: linear-gradient(160deg,#181818 0%,#0a0a0a 60%); }
+#s-work  { background: linear-gradient(160deg,#071020 0%,#080808 60%); }
+#s-photo { background: linear-gradient(160deg,#1a0e00 0%,#080808 60%); }
+#s-video { background: linear-gradient(160deg,#130015 0%,#080808 60%); }
+
+.sec-back {
+  position: fixed; top: 18px; left: 20px; z-index: 300;
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; letter-spacing: .06em;
+  color: rgba(240,236,228,.38); cursor: pointer;
+  opacity: 0; transform: translateX(-6px);
+  transition: opacity .4s ease .5s, transform .4s ease .5s, color .2s;
+}
+#ov.on .sec-back { opacity: 1; transform: translateX(0); }
+.sec-back:hover { color: var(--text); }
+.sec-back svg { width: 12px; height: 12px; }
+
+.sec-line {
+  width: 32px; height: 2px; border-radius: 2px; margin-bottom: 22px;
+  opacity: 0; transform: scaleX(0); transform-origin: left;
+  transition: all .5s ease .55s;
+}
+#ov.on .sec-line { opacity: 1; transform: scaleX(1); }
+#s-about .sec-line { background: var(--a-about); }
+#s-work  .sec-line { background: var(--a-work); }
+#s-photo .sec-line { background: var(--a-photo); }
+#s-video .sec-line { background: var(--a-video); }
+
+.sec-tag {
+  font-size: 9px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase;
+  margin-bottom: 12px; opacity: 0; transform: translateY(8px);
+  transition: all .4s ease .58s;
+}
+#ov.on .sec-tag { opacity: 1; transform: translateY(0); }
+#s-about .sec-tag { color: var(--a-about); }
+#s-work  .sec-tag { color: var(--a-work); }
+#s-photo .sec-tag { color: var(--a-photo); }
+#s-video .sec-tag { color: var(--a-video); }
+
+.sec-h {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(46px,13vw,80px); line-height: .95; letter-spacing: .01em;
+  margin-bottom: 22px; opacity: 0; transform: translateY(14px);
+  transition: all .5s ease .62s;
+}
+#ov.on .sec-h { opacity: 1; transform: translateY(0); }
+
+.sec-body {
+  font-size: 15px; line-height: 1.75; color: rgba(240,236,228,.5);
+  margin-bottom: 36px; opacity: 0; transform: translateY(10px);
+  transition: all .5s ease .68s;
+}
+#ov.on .sec-body { opacity: 1; transform: translateY(0); }
+
+.sec-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  opacity: 0; transform: translateY(10px);
+  transition: all .5s ease .75s;
+}
+#ov.on .sec-grid { opacity: 1; transform: translateY(0); }
+
+.sec-item {
+  padding: 18px 16px; border-radius: 14px;
+  border: 1px solid rgba(240,236,228,.06);
+  background: rgba(240,236,228,.025);
+}
+.sec-item-label {
+  font-size: 9px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 6px;
+}
+#s-about .sec-item-label { color: var(--a-about); }
+#s-work  .sec-item-label { color: var(--a-work); }
+#s-photo .sec-item-label { color: var(--a-photo); }
+#s-video .sec-item-label { color: var(--a-video); }
+.sec-item-val { font-size: 15px; font-weight: 600; letter-spacing: -.02em; margin-bottom: 4px; line-height: 1.2; }
+.sec-item-desc { font-size: 11px; color: rgba(240,236,228,.35); line-height: 1.5; }
+
+@keyframes nameIn { to { opacity:1; filter:blur(0); transform:translateY(0); } }
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+@keyframes pulse  { 0%,100%{opacity:.3;transform:scale(1)} 50%{opacity:.9;transform:scale(1.4)} }
+
+@media (min-width: 700px) {
+  #scene { flex-direction: row; padding: 70px 20px 20px; }
+  .card-row { flex-direction: column; }
+  .card-name-text { font-size: clamp(22px, 2.2vw, 38px); }
+  .card-media iframe { width: 300%; height: 300%; }
+  .sec { padding: 100px 60px 70px; max-width: 820px; margin: 0 auto; }
+  .sec-h { font-size: clamp(52px,7vw,88px); }
+  .sec-body { font-size: 16px; max-width: 520px; }
+}
+</style>
+</head>
+<body>
+
+<div class="amb" id="a1"></div>
+<div class="amb" id="a2"></div>
+
+<!-- HERO -->
+<div id="hero">
+  <h1 class="hero-name">
+    Felipe<br>Ehrhardt
+    <span>Content Creator</span>
+  </h1>
+  <div class="hero-tap" id="hero-tap">
+    <div class="hero-tap-dot"></div>
+    <span>Tap to explore</span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div id="header">
+  <div class="hdr-name">Felipe Ehrhardt</div>
+  <div class="hdr-dot"></div>
+</div>
+
+<!-- CARDS -->
+<div id="scene">
+  <div class="card-row">
+
+    <!-- VIDEOGRAPHY -->
+    <div class="card" data-id="video" style="transition-delay:.05s">
+      <div class="card-media">
+        <iframe
+          src="https://www.youtube.com/embed/HADSJUyu3Rc?autoplay=1&mute=1&loop=1&playlist=HADSJUyu3Rc&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1"
+          allow="autoplay; encrypted-media"
+          allowfullscreen title="reel">
+        </iframe>
+      </div>
+      <div class="card-overlay"></div>
+      <div class="card-glow"></div>
+      <div class="card-name"><div class="card-name-text">VIDEO</div></div>
+    </div>
+
+    <!-- PHOTOGRAPHY -->
+    <div class="card" data-id="photo" style="transition-delay:.12s">
+      <div class="card-media">
+        <div class="carousel-inner" id="photo-carousel">
+          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80" alt="photo 1"/>
+          <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&q=80" alt="photo 2"/>
+          <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=400&q=80" alt="photo 3"/>
+          <img src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=400&q=80" alt="photo 4"/>
+        </div>
+      </div>
+      <div class="card-overlay"></div>
+      <div class="card-glow"></div>
+      <div class="card-name"><div class="card-name-text">PHOTO</div></div>
+    </div>
+
+  </div>
+  <div class="card-row">
+
+    <!-- WORK -->
+    <div class="card" data-id="work" style="transition-delay:.19s">
+      <div class="card-media">
+        <div class="work-lines" id="work-lines"></div>
+      </div>
+      <div class="card-overlay"></div>
+      <div class="card-glow"></div>
+      <div class="card-name"><div class="card-name-text">WORK</div></div>
+    </div>
+
+    <!-- ABOUT ME -->
+    <div class="card" data-id="about" style="transition-delay:.26s">
+      <div class="card-media">
+        <img src="https://static.vecteezy.com/system/resources/thumbnails/032/841/040/small/portrait-of-handsome-man-with-arms-crossed-on-black-background-ai-generative-photo.jpeg" alt="Felipe" style="object-position: center center;"/>
+      </div>
+      <div class="card-overlay"></div>
+      <div class="card-glow"></div>
+      <div class="card-name"><div class="card-name-text">ABOUT ME</div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SECTION OVERLAY -->
+<div id="ov">
+  <div class="sec-back" id="sec-back">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M13 7H1M7 1L1 7l6 6"/>
+    </svg>
+    Back
+  </div>
+
+  <div class="sec" id="s-about">
+    <div class="sec-line"></div><div class="sec-tag">About Me</div>
+    <h2 class="sec-h">Content<br>Creator.</h2>
+    <p class="sec-body">Felipe Ehrhardt — Creative Marketing Operator based in Gold Coast, Australia. Background in Audiovisual & Media Communication and E-commerce.<br><br>Strategy, production, automation and growth.</p>
+    <div class="sec-grid">
+      <div class="sec-item"><div class="sec-item-label">Location</div><div class="sec-item-val">Gold Coast</div><div class="sec-item-desc">Queensland — working globally</div></div>
+      <div class="sec-item"><div class="sec-item-label">Background</div><div class="sec-item-val">Media + Biz</div><div class="sec-item-desc">Audiovisual & E-commerce</div></div>
+      <div class="sec-item"><div class="sec-item-label">Skills</div><div class="sec-item-val">Full-stack</div><div class="sec-item-desc">Creative, strategy & automation</div></div>
+      <div class="sec-item"><div class="sec-item-label">Focus</div><div class="sec-item-val">Digital Growth</div><div class="sec-item-desc">E-commerce & brand building</div></div>
+    </div>
+  </div>
+
+  <div class="sec" id="s-work">
+    <div class="sec-line"></div><div class="sec-tag">Work</div>
+    <h2 class="sec-h">Built to<br>convert.</h2>
+    <p class="sec-body">From e-bike brand marketing to AI automation and digital product development — I build things that move people and move numbers.</p>
+    <div class="sec-grid">
+      <div class="sec-item"><div class="sec-item-label">01</div><div class="sec-item-val">Project 1</div><div class="sec-item-desc">Coming soon</div></div>
+      <div class="sec-item"><div class="sec-item-label">02</div><div class="sec-item-val">Project 2</div><div class="sec-item-desc">Coming soon</div></div>
+      <div class="sec-item" style="grid-column:1/-1"><div class="sec-item-label">03</div><div class="sec-item-val">Project 3</div><div class="sec-item-desc">Coming soon</div></div>
+    </div>
+  </div>
+
+  <div class="sec" id="s-photo">
+    <div class="sec-line"></div><div class="sec-tag">Photography</div>
+    <h2 class="sec-h">Light &<br>intention.</h2>
+    <p class="sec-body">Photography for me is about freezing a feeling — not just a moment. Product, street and lifestyle work with a sharp eye for composition and controlled mood.</p>
+    <div class="sec-grid">
+      <div class="sec-item"><div class="sec-item-label">Style</div><div class="sec-item-val">Cinematic</div><div class="sec-item-desc">High contrast, intentional framing</div></div>
+      <div class="sec-item"><div class="sec-item-label">Focus</div><div class="sec-item-val">Product & Brand</div><div class="sec-item-desc">E-commerce & lifestyle shoots</div></div>
+      <div class="sec-item"><div class="sec-item-label">Approach</div><div class="sec-item-val">Story-driven</div><div class="sec-item-desc">Every frame communicates</div></div>
+      <div class="sec-item"><div class="sec-item-label">Tools</div><div class="sec-item-val">Sony + Mobile</div><div class="sec-item-desc">Adaptable to the brief</div></div>
+    </div>
+  </div>
+
+  <div class="sec" id="s-video">
+    <div class="sec-line"></div><div class="sec-tag">Videography</div>
+    <h2 class="sec-h">Stories<br>in motion.</h2>
+    <p class="sec-body">From concept to final cut — I handle production, storytelling, and post. Social-first video that drives real engagement on Instagram and TikTok.</p>
+    <div class="sec-grid">
+      <div class="sec-item"><div class="sec-item-label">Format</div><div class="sec-item-val">Reels / TikTok</div><div class="sec-item-desc">Short-form, high-retention</div></div>
+      <div class="sec-item"><div class="sec-item-label">Pipeline</div><div class="sec-item-val">End-to-End</div><div class="sec-item-desc">Concept → shoot → edit → post</div></div>
+      <div class="sec-item"><div class="sec-item-label">Tools</div><div class="sec-item-val">AI + Traditional</div><div class="sec-item-desc">ElevenLabs, Premiere, stock</div></div>
+      <div class="sec-item"><div class="sec-item-label">Philosophy</div><div class="sec-item-val">Hook in 2s</div><div class="sec-item-desc">Narrative-first, always.</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const hero    = document.getElementById('hero');
+const header  = document.getElementById('header');
+const scene   = document.getElementById('scene');
+const ov      = document.getElementById('ov');
+const secBack = document.getElementById('sec-back');
+const cards   = document.querySelectorAll('.card');
+let state = 'hero';
+
+// Work animated lines
+(function() {
+  const container = document.getElementById('work-lines');
+  if (!container) return;
+  for (let i = 0; i < 12; i++) {
+    const l = document.createElement('div');
+    l.className = 'work-line';
+    l.style.top = (8 + i * 7.5) + '%';
+    l.style.animationDelay = (i * 0.28) + 's';
+    l.style.animationDuration = (3 + Math.random() * 2) + 's';
+    container.appendChild(l);
+  }
+})();
+
+// Photo carousel
+(function() {
+  const carousel = document.getElementById('photo-carousel');
+  if (!carousel) return;
+  const imgs = carousel.querySelectorAll('img');
+  let idx = 0;
+  setInterval(() => {
+    idx = (idx + 1) % imgs.length;
+    carousel.style.transform = `translateX(-${idx * 100}%)`;
+  }, 2800);
+})();
+
+function goCards() {
+  if (state !== 'hero') return;
+  state = 'cards';
+  hero.classList.add('out');
+  setTimeout(() => {
+    header.classList.add('on');
+    scene.classList.add('on');
+    cards.forEach(c => c.classList.add('in'));
+  }, 300);
+}
+
+document.getElementById('hero-tap').addEventListener('click', goCards);
+document.addEventListener('keydown', e => {
+  if (state === 'hero') goCards();
+  else if (state === 'section' && e.key === 'Escape') goBack();
+});
+setTimeout(() => { if (state === 'hero') goCards(); }, 3600);
+
+cards.forEach(card => {
+  card.addEventListener('click', () => {
+    if (state !== 'cards') return;
+    state = 'section';
+    const id = card.dataset.id;
+    cards.forEach(c => { if (c !== card) c.classList.add('dim'); });
+    setTimeout(() => {
+      document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
+      document.getElementById('s-' + id).classList.add('on');
+      ov.classList.add('on');
+      ov.scrollTop = 0;
+    }, 220);
+  });
+});
+
+function goBack() {
+  if (state !== 'section') return;
+  state = 'cards';
+  ov.classList.remove('on');
+  setTimeout(() => {
+    document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
+    cards.forEach(c => c.classList.remove('dim'));
+  }, 500);
+}
+secBack.addEventListener('click', goBack);
+</script>
+</body>
+</html>
