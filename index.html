@@ -61,26 +61,36 @@ body::before {
 #hero.out { opacity: 0; transform: translateY(-18px); pointer-events: none; }
 
 .hero-eyebrow { display: none; }
+.hero-content {
+  position: relative; z-index: 1;
+  width: 90vw; max-width: 560px;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 0 16px;
+}
 .hero-name {
   font-family: 'Horizon', 'Bebas Neue', sans-serif;
-  font-size: clamp(72px, 22vw, 140px);
+  font-size: clamp(52px, 16vw, 100px);
   line-height: .92; letter-spacing: -.01em; text-align: center;
+  width: 100%;
   opacity: 0; filter: blur(12px); transform: translateY(20px);
-  animation: nameIn 1s cubic-bezier(.34,1.4,.64,1) .5s forwards; position: relative;
+  animation: nameIn 1s cubic-bezier(.34,1.4,.64,1) .5s forwards;
 }
 .hero-name span {
   display: block;
   font-family: 'DM Sans', sans-serif; font-style: normal;
-  font-size: clamp(14px, 4vw, 28px); font-weight: 500;
+  font-size: clamp(11px, 3.5vw, 16px); font-weight: 500;
   letter-spacing: .24em; text-transform: uppercase;
-  color: var(--muted); margin-top: 16px;
+  color: var(--muted); margin-top: 14px;
 }
 #hero-video {
   position: absolute; inset: 0; z-index: -1; overflow: hidden;
 }
 #hero-video iframe {
   position: absolute; top: 50%; left: 50%;
-  width: 200%; height: 200%;
+  width: 177.78vh;
+  min-width: 100%;
+  height: 56.25vw;
+  min-height: 100%;
   transform: translate(-50%, -50%);
   pointer-events: none; border: none;
 }
@@ -340,6 +350,10 @@ body::before {
 @keyframes pulse  { 0%,100%{opacity:.3;transform:scale(1)} 50%{opacity:.9;transform:scale(1.4)} }
 
 @media (min-width: 700px) {
+  .hero-content { max-width: 400px; }
+  .hero-name { font-size: clamp(36px, 5vw, 64px); }
+  .hero-name span { font-size: clamp(10px, 1.2vw, 13px); }
+  .hero-btn { padding: 10px 28px; font-size: 12px; }
   #scene { flex-direction: row; padding: 70px 20px 20px; }
   .card-row { flex-direction: column; }
   .card-name-text { font-size: clamp(22px, 2.2vw, 38px); }
@@ -362,13 +376,15 @@ body::before {
       allow="autoplay; encrypted-media" allowfullscreen title="reel bg"></iframe>
   </div>
   <div id="hero-video-overlay"></div>
-  <h1 class="hero-name" style="z-index:1">
-    Felipe<br>Ehrhardt
-    <span>Content Creator</span>
-  </h1>
-  <div class="hero-btn-wrap" id="hero-tap">
-    <div class="hero-btn-glow" id="hero-btn-glow"></div>
-    <button class="hero-btn">Explore</button>
+  <div class="hero-content">
+    <h1 class="hero-name">
+      Felipe<br>Ehrhardt
+      <span>Content Creator</span>
+    </h1>
+    <div class="hero-btn-wrap" id="hero-tap">
+      <div class="hero-btn-glow" id="hero-btn-glow"></div>
+      <button class="hero-btn">Explore</button>
+    </div>
   </div>
 </div>
 
