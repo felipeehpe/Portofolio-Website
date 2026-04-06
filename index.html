@@ -7,6 +7,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
+@font-face {
+  font-family: 'Horizon';
+  src: url('fonts/Horizon.woff2') format('woff2'),
+       url('fonts/Horizon.otf') format('opentype');
+  font-weight: normal; font-style: normal; font-display: swap;
+}
+
 :root {
   --bg: #080808;
   --text: #f0ece4;
@@ -55,7 +62,7 @@ body::before {
 
 .hero-eyebrow { display: none; }
 .hero-name {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Horizon', 'Bebas Neue', sans-serif;
   font-size: clamp(72px, 22vw, 140px);
   line-height: .92; letter-spacing: -.01em; text-align: center;
   opacity: 0; filter: blur(12px); transform: translateY(20px);
