@@ -66,7 +66,6 @@ body::before {
   width: 88vw; max-width: 480px;
   display: flex; flex-direction: column; align-items: center;
   text-align: center;
-  overflow: hidden;
 }
 .hero-name {
   font-family: 'Horizon', 'Bebas Neue', sans-serif;
@@ -351,8 +350,8 @@ body::before {
 @keyframes pulse  { 0%,100%{opacity:.3;transform:scale(1)} 50%{opacity:.9;transform:scale(1.4)} }
 
 @media (min-width: 700px) {
-  .hero-content { max-width: 400px; }
-  .hero-name { font-size: clamp(36px, 5vw, 64px); }
+  .hero-content { max-width: 600px; }
+  .hero-name { font-size: clamp(28px, 3.5vw, 48px); }
   .hero-name span { font-size: clamp(10px, 1.2vw, 13px); }
   .hero-btn { padding: 10px 28px; font-size: 12px; }
   #scene { flex-direction: row; padding: 70px 20px 20px; }
