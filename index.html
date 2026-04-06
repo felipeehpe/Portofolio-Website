@@ -167,19 +167,29 @@ body::before {
 .card-overlay {
   position: absolute; inset: 0; z-index: 1; border-radius: inherit; pointer-events: none;
 }
-[data-id=about] .card-overlay { background: linear-gradient(160deg, rgba(10,10,10,.5) 0%, rgba(0,0,0,.25) 100%); }
-[data-id=work]  .card-overlay { background: linear-gradient(160deg, rgba(11,26,46,.65) 0%, rgba(0,0,0,.4) 100%); }
-[data-id=photo] .card-overlay { background: linear-gradient(160deg, rgba(31,15,0,.45) 0%, rgba(0,0,0,.25) 100%); }
-[data-id=video] .card-overlay { background: linear-gradient(160deg, rgba(21,0,21,.55) 0%, rgba(0,0,0,.35) 100%); }
+[data-id=about] .card-overlay { background: linear-gradient(to top, rgba(10,10,10,.85) 0%, rgba(200,192,176,.15) 50%, transparent 75%); }
+[data-id=work]  .card-overlay { background: linear-gradient(to top, rgba(11,26,46,.9) 0%, rgba(61,139,255,.15) 50%, transparent 75%); }
+[data-id=photo] .card-overlay { background: linear-gradient(to top, rgba(31,15,0,.9) 0%, rgba(255,122,26,.15) 50%, transparent 75%); }
+[data-id=video] .card-overlay { background: linear-gradient(to top, rgba(21,0,21,.9) 0%, rgba(192,60,255,.15) 50%, transparent 75%); }
 
 /* Glow */
 .card-glow {
   position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 2;
 }
-[data-id=about] .card-glow { background: radial-gradient(ellipse at 50% 0%, rgba(200,192,176,.12) 0%, transparent 65%); }
-[data-id=work]  .card-glow { background: radial-gradient(ellipse at 50% 0%, rgba(61,139,255,.18) 0%, transparent 65%); }
-[data-id=photo] .card-glow { background: radial-gradient(ellipse at 50% 0%, rgba(255,122,26,.16) 0%, transparent 65%); }
-[data-id=video] .card-glow { background: radial-gradient(ellipse at 50% 0%, rgba(192,60,255,.18) 0%, transparent 65%); }
+[data-id=about] .card-glow { background: radial-gradient(ellipse at 50% 100%, rgba(200,192,176,.2) 0%, transparent 65%); }
+[data-id=work]  .card-glow { background: radial-gradient(ellipse at 50% 100%, rgba(61,139,255,.25) 0%, transparent 65%); }
+[data-id=photo] .card-glow { background: radial-gradient(ellipse at 50% 100%, rgba(255,122,26,.22) 0%, transparent 65%); }
+[data-id=video] .card-glow { background: radial-gradient(ellipse at 50% 100%, rgba(192,60,255,.25) 0%, transparent 65%); }
+
+[data-id=about] { box-shadow: 0 20px 60px -10px rgba(200,192,176,.35); }
+[data-id=work]  { box-shadow: 0 20px 60px -10px rgba(61,139,255,.35); }
+[data-id=photo] { box-shadow: 0 20px 60px -10px rgba(255,122,26,.35); }
+[data-id=video] { box-shadow: 0 20px 60px -10px rgba(192,60,255,.35); }
+
+[data-id=about]:hover { box-shadow: 0 24px 80px -8px rgba(200,192,176,.55); }
+[data-id=work]:hover  { box-shadow: 0 24px 80px -8px rgba(61,139,255,.55); }
+[data-id=photo]:hover { box-shadow: 0 24px 80px -8px rgba(255,122,26,.55); }
+[data-id=video]:hover { box-shadow: 0 24px 80px -8px rgba(192,60,255,.55); }
 
 /* Border */
 .card::after {
