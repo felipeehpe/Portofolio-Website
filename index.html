@@ -452,8 +452,7 @@ body::before {
 .photo-col {
   flex: 1; display: flex; flex-direction: column; gap: 10px;
 }
-.photo-col:nth-child(2) { margin-top: 52px; }
-.photo-col:nth-child(3) { margin-top: 26px; }
+.photo-col:nth-child(2) { margin-top: 40px; }
 
 .photo-item {
   position: relative; overflow: hidden; border-radius: 12px; cursor: pointer;
@@ -468,20 +467,16 @@ body::before {
 .photo-item img {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover;
-  filter: grayscale(75%) brightness(.85);
-  transition: filter .45s ease, transform .45s ease;
+  transition: transform .45s ease;
 }
 .photo-item:hover img,
-.photo-item:active img { filter: grayscale(0) brightness(1); transform: scale(1.05); }
+.photo-item:active img { transform: scale(1.05); }
 
 .photo-item-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(26,14,0,.9) 0%, transparent 55%);
-  opacity: 0; transition: opacity .3s ease;
+  background: linear-gradient(to top, rgba(0,0,0,.75) 0%, transparent 52%);
   display: flex; align-items: flex-end; padding: 10px;
 }
-.photo-item:hover .photo-item-overlay,
-.photo-item:active .photo-item-overlay { opacity: 1; }
 .photo-item-tag {
   font-size: 7px; font-weight: 500; letter-spacing: .18em;
   text-transform: uppercase; color: var(--a-photo); margin-bottom: 3px;
@@ -496,6 +491,7 @@ body::before {
   position: fixed; inset: 0; z-index: 200;
   background: linear-gradient(160deg, #1a0e00 0%, #080808 60%);
   overflow-y: auto; -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   opacity: 0; pointer-events: none;
   transition: opacity .4s ease;
 }
@@ -521,40 +517,79 @@ body::before {
 .pd-title {
   font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(44px, 13vw, 76px); line-height: .92; letter-spacing: .01em;
-  margin-bottom: 26px;
+  margin-bottom: 22px;
 }
-.pd-meta-card {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 10px; margin-bottom: 32px;
+.pd-info-card {
+  padding: 20px 18px; border-radius: 16px;
+  border: 1px solid rgba(255,122,26,.15);
+  background: rgba(255,122,26,.05);
+  margin-bottom: 28px;
 }
-.pd-meta-item {
-  padding: 16px 14px; border-radius: 14px;
-  border: 1px solid rgba(255,122,26,.12);
-  background: rgba(255,122,26,.04);
-  display: flex; flex-direction: column; gap: 5px;
+.pd-client-label {
+  font-size: 9px; font-weight: 500; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--a-photo); margin-bottom: 5px;
 }
-.pd-meta-label {
-  font-size: 9px; font-weight: 500; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--a-photo);
+.pd-client-val {
+  font-size: 16px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 14px;
 }
-.pd-meta-val {
-  font-size: 14px; font-weight: 600; letter-spacing: -.01em; line-height: 1.2;
+.pd-desc {
+  font-size: 14px; line-height: 1.75; color: rgba(240,236,228,.55);
+  border-top: 1px solid rgba(255,122,26,.1); padding-top: 14px;
 }
+
+.pd-carousel-wrap { position: relative; }
+.pd-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  z-index: 10; width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(10,5,0,.85); border: 1px solid rgba(255,122,26,.35);
+  color: #f0ece4; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, border-color .2s;
+}
+.pd-arrow:hover { background: rgba(255,122,26,.25); border-color: rgba(255,122,26,.7); }
+.pd-arrow svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
+.pd-arrow-prev { left: -14px; }
+.pd-arrow-next { right: -14px; }
+
 .pd-carousel {
   overflow-x: auto; -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; cursor: grab; user-select: none;
-  margin: 0 -24px; padding: 0 24px;
+  scrollbar-width: none; scroll-snap-type: x mandatory;
+  cursor: grab; user-select: none;
 }
 .pd-carousel::-webkit-scrollbar { display: none; }
 .pd-carousel.grabbing { cursor: grabbing; }
-.pd-track { display: flex; gap: 12px; width: max-content; padding-bottom: 4px; }
+.pd-track { display: flex; gap: 10px; width: max-content; }
 .pd-track img {
-  height: 240px; width: auto; min-width: 160px;
-  border-radius: 12px; object-fit: cover; flex-shrink: 0; pointer-events: none;
+  width: 72vw; max-width: 340px;
+  aspect-ratio: 4/3; height: auto;
+  border-radius: 12px; object-fit: cover;
+  flex-shrink: 0; scroll-snap-align: start; cursor: zoom-in;
 }
+
+/* LIGHTBOX */
+#pd-lightbox {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,.95);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .3s ease;
+}
+#pd-lightbox.on { opacity: 1; pointer-events: all; }
+#pd-lightbox img {
+  max-width: 92vw; max-height: 88vh;
+  border-radius: 8px; object-fit: contain;
+}
+#pd-lb-close {
+  position: absolute; top: 16px; right: 20px;
+  color: rgba(240,236,228,.5); cursor: pointer;
+  font-size: 32px; line-height: 1; transition: color .2s;
+}
+#pd-lb-close:hover { color: #f0ece4; }
+
 @media (min-width: 700px) {
   .pd-content { padding: 100px 60px 70px; max-width: 820px; margin: 0 auto; }
-  .pd-track img { height: 320px; }
+  .pd-track img { width: auto; max-width: none; height: 300px; aspect-ratio: auto; }
+  .pd-arrow-prev { left: -20px; }
+  .pd-arrow-next { right: -20px; }
 }
 </style>
 </head>
@@ -696,31 +731,44 @@ body::before {
           <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=400&h=530&fit=crop&q=80" alt="Mountain Series"/>
           <div class="photo-item-overlay"><div><div class="photo-item-tag">Landscape</div><div class="photo-item-name">Mountain<br>Series</div></div></div>
         </div>
-        <div class="photo-item square" data-proj="3">
-          <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=400&fit=crop&q=80" alt="Human Stories"/>
-          <div class="photo-item-overlay"><div><div class="photo-item-tag">Portrait</div><div class="photo-item-name">Human<br>Stories</div></div></div>
+        <div class="photo-item square" data-proj="2">
+          <img src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=400&h=400&fit=crop&q=80" alt="Brand Visuals"/>
+          <div class="photo-item-overlay"><div><div class="photo-item-tag">Product</div><div class="photo-item-name">Brand<br>Visuals</div></div></div>
+        </div>
+        <div class="photo-item landscape" data-proj="4">
+          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop&q=80" alt="Open Horizons"/>
+          <div class="photo-item-overlay"><div><div class="photo-item-tag">Nature</div><div class="photo-item-name">Open<br>Horizons</div></div></div>
+        </div>
+        <div class="photo-item portrait" data-proj="6">
+          <img src="https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=400&h=530&fit=crop&q=80" alt="Coastal Mood"/>
+          <div class="photo-item-overlay"><div><div class="photo-item-tag">Coastal</div><div class="photo-item-name">Coastal<br>Mood</div></div></div>
+        </div>
+        <div class="photo-item square" data-proj="8">
+          <img src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=400&h=400&fit=crop&q=80" alt="Still Life"/>
+          <div class="photo-item-overlay"><div><div class="photo-item-tag">Still Life</div><div class="photo-item-name">Still<br>Life</div></div></div>
         </div>
       </div>
 
       <div class="photo-col">
         <div class="photo-item landscape" data-proj="1">
-          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop&q=80" alt="Open Horizons"/>
-          <div class="photo-item-overlay"><div><div class="photo-item-tag">Nature</div><div class="photo-item-name">Open<br>Horizons</div></div></div>
+          <img src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=600&h=400&fit=crop&q=80" alt="Urban Frame"/>
+          <div class="photo-item-overlay"><div><div class="photo-item-tag">Architecture</div><div class="photo-item-name">Urban<br>Frame</div></div></div>
         </div>
-        <div class="photo-item portrait" data-proj="4">
+        <div class="photo-item portrait" data-proj="3">
           <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=530&fit=crop&q=80" alt="Forest Light"/>
           <div class="photo-item-overlay"><div><div class="photo-item-tag">Nature</div><div class="photo-item-name">Forest<br>Light</div></div></div>
         </div>
-      </div>
-
-      <div class="photo-col">
-        <div class="photo-item square" data-proj="2">
-          <img src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=400&h=400&fit=crop&q=80" alt="Brand Visuals"/>
-          <div class="photo-item-overlay"><div><div class="photo-item-tag">Product</div><div class="photo-item-name">Brand<br>Visuals</div></div></div>
+        <div class="photo-item square" data-proj="5">
+          <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=400&fit=crop&q=80" alt="Human Stories"/>
+          <div class="photo-item-overlay"><div><div class="photo-item-tag">Portrait</div><div class="photo-item-name">Human<br>Stories</div></div></div>
         </div>
-        <div class="photo-item landscape" data-proj="5">
-          <img src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=600&h=400&fit=crop&q=80" alt="Urban Frame"/>
-          <div class="photo-item-overlay"><div><div class="photo-item-tag">Architecture</div><div class="photo-item-name">Urban<br>Frame</div></div></div>
+        <div class="photo-item landscape" data-proj="7">
+          <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&h=400&fit=crop&q=80" alt="On the Road"/>
+          <div class="photo-item-overlay"><div><div class="photo-item-tag">Travel</div><div class="photo-item-name">On the<br>Road</div></div></div>
+        </div>
+        <div class="photo-item portrait" data-proj="9">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=530&fit=crop&q=80" alt="Street Stories"/>
+          <div class="photo-item-overlay"><div><div class="photo-item-tag">Street</div><div class="photo-item-name">Street<br>Stories</div></div></div>
         </div>
       </div>
 
@@ -869,14 +917,29 @@ body::before {
   <div class="pd-content">
     <div class="pd-tag" id="pd-tag"></div>
     <h3 class="pd-title" id="pd-title"></h3>
-    <div class="pd-meta-card">
-      <div class="pd-meta-item"><span class="pd-meta-label">Client</span><span class="pd-meta-val" id="pd-client"></span></div>
-      <div class="pd-meta-item"><span class="pd-meta-label">Format</span><span class="pd-meta-val" id="pd-format"></span></div>
-      <div class="pd-meta-item"><span class="pd-meta-label">Tools</span><span class="pd-meta-val" id="pd-tools"></span></div>
-      <div class="pd-meta-item"><span class="pd-meta-label">Result</span><span class="pd-meta-val" id="pd-result"></span></div>
+    <div class="pd-info-card">
+      <div class="pd-client-label">Client</div>
+      <div class="pd-client-val" id="pd-client"></div>
+      <p class="pd-desc" id="pd-desc"></p>
     </div>
-    <div class="pd-carousel" id="pd-carousel"><div class="pd-track" id="pd-track"></div></div>
+    <div class="pd-carousel-wrap">
+      <button class="pd-arrow pd-arrow-prev" id="pd-prev" aria-label="Previous">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="pd-carousel" id="pd-carousel">
+        <div class="pd-track" id="pd-track"></div>
+      </div>
+      <button class="pd-arrow pd-arrow-next" id="pd-next" aria-label="Next">
+        <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
   </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="pd-lightbox">
+  <div id="pd-lb-close">×</div>
+  <img id="pd-lb-img" src="" alt=""/>
 </div>
 
 <script>
@@ -969,21 +1032,25 @@ document.querySelectorAll('.vid-proj-thumb').forEach(thumb => {
 
 // Photo projects data
 const photoProjects = [
-  { title: 'Mountain Series', tag: 'Landscape · Nature', client: 'Personal', format: 'Digital Print', tools: 'Sony A7III', result: '18 shots', imgs: ['https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80','https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80','https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=600&q=80'] },
-  { title: 'Open Horizons', tag: 'Nature · Wide', client: 'Personal', format: 'Social & Print', tools: 'Sony A7III', result: '24 shots', imgs: ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80','https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=600&q=80'] },
-  { title: 'Brand Visuals', tag: 'Product · Commercial', client: 'Placeholder Brand', format: 'E-commerce', tools: 'Sony + Lightroom', result: '40 deliverables', imgs: ['https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=600&q=80','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80','https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&q=80'] },
-  { title: 'Human Stories', tag: 'Portrait · Lifestyle', client: 'Personal', format: 'Editorial', tools: 'Sony A7III · Natural light', result: '30 portraits', imgs: ['https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&q=80','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80','https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80'] },
-  { title: 'Forest Light', tag: 'Nature · Mood', client: 'Personal', format: 'Fine Art Print', tools: 'Sony A7III', result: '12 prints', imgs: ['https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80','https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=600&q=80'] },
-  { title: 'Urban Frame', tag: 'Architecture · Street', client: 'Personal', format: 'Editorial', tools: 'Sony A7III · Wide lens', result: '22 shots', imgs: ['https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=600&q=80','https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=600&q=80','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80'] }
+  { title: 'Mountain Series', tag: 'Landscape · Nature', client: 'Personal Project', desc: 'A personal series shot across alpine regions — chasing the light between peaks and clouds. Every frame tries to hold what a moment at altitude actually feels like.', imgs: ['https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=85','https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=85','https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=85'] },
+  { title: 'Urban Frame', tag: 'Architecture · Street', client: 'Personal Project', desc: 'Geometric compositions found in city infrastructure — lines, shadows and textures that most people walk past without noticing. Shot on a wide lens, post-processed for high contrast.', imgs: ['https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=800&q=85','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=85'] },
+  { title: 'Brand Visuals', tag: 'Product · Commercial', client: 'Placeholder Brand', desc: 'Commercial product photography for an e-commerce brand — clean backgrounds, controlled studio lighting and lifestyle context shots for web and social use.', imgs: ['https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=85','https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=85','https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=85'] },
+  { title: 'Forest Light', tag: 'Nature · Mood', client: 'Personal Project', desc: 'Golden hour filtering through dense canopy. This series is about the quality of light rather than the subject — fog, rays and silence. Shot on a single prime lens with no artificial light.', imgs: ['https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=85','https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=85'] },
+  { title: 'Open Horizons', tag: 'Nature · Wide', client: 'Personal Project', desc: 'Wide open landscapes shot across different seasons — the kind of frames that feel bigger than the print. Colour graded to hold the warmth of late afternoon.', imgs: ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=85','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85','https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=800&q=85'] },
+  { title: 'Human Stories', tag: 'Portrait · Lifestyle', client: 'Personal Project', desc: 'Environmental portraits shot with available light — the goal was to capture personality through posture and context, not just expression. Minimal direction given to each subject.', imgs: ['https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=85','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85','https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=85'] },
+  { title: 'Coastal Mood', tag: 'Coastal · Lifestyle', client: 'Personal Project', desc: 'A study of coastlines at different times of day — the tension between stillness and movement in water. Mostly handheld, mostly magic hour. Post-processing kept minimal to preserve the atmosphere.', imgs: ['https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=800&q=85','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=85','https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=800&q=85'] },
+  { title: 'On the Road', tag: 'Travel · Documentary', client: 'Personal Project', desc: 'Documentary-style travel photography from a road trip across three countries. Shot fast, edited slow — the priority was honest moments over composed ones.', imgs: ['https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=85','https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=85','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85'] },
+  { title: 'Still Life', tag: 'Still Life · Product', client: 'Personal Project', desc: 'Quiet compositions built around light and texture — objects arranged to find balance rather than symmetry. Part of an ongoing personal study in form and colour.', imgs: ['https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&q=85','https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=85','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=85'] },
+  { title: 'Street Stories', tag: 'Street · Documentary', client: 'Personal Project', desc: 'Street photography from urban environments — the unscripted, the incidental and the overlooked. Shot in continuous burst, one keeper per hundred frames.', imgs: ['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=85','https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=800&q=85','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85'] }
 ];
 
 function revealPhotoGallery() {
   document.querySelectorAll('.photo-item').forEach((el, i) => {
-    setTimeout(() => el.classList.add('revealed'), i * 110);
+    setTimeout(() => el.classList.add('revealed'), i * 90);
   });
 }
 
-// Photo item click → open detail
+// Photo detail open
 const photoDetail = document.getElementById('photo-detail');
 document.querySelectorAll('.photo-item').forEach(item => {
   item.addEventListener('click', () => {
@@ -992,11 +1059,10 @@ document.querySelectorAll('.photo-item').forEach(item => {
     document.getElementById('pd-tag').textContent = proj.tag;
     document.getElementById('pd-title').textContent = proj.title;
     document.getElementById('pd-client').textContent = proj.client;
-    document.getElementById('pd-format').textContent = proj.format;
-    document.getElementById('pd-tools').textContent = proj.tools;
-    document.getElementById('pd-result').textContent = proj.result;
+    document.getElementById('pd-desc').textContent = proj.desc;
     const track = document.getElementById('pd-track');
     track.innerHTML = proj.imgs.map(src => '<img src="' + src + '" alt=""/>').join('');
+    document.getElementById('pd-carousel').scrollLeft = 0;
     photoDetail.classList.add('on');
     photoDetail.scrollTop = 0;
   });
@@ -1006,7 +1072,17 @@ document.getElementById('pd-back').addEventListener('click', () => {
   photoDetail.classList.remove('on');
 });
 
-// Carousel drag-to-scroll
+// Carousel arrows
+document.getElementById('pd-prev').addEventListener('click', () => {
+  const c = document.getElementById('pd-carousel');
+  c.scrollBy({ left: -c.offsetWidth * 0.85, behavior: 'smooth' });
+});
+document.getElementById('pd-next').addEventListener('click', () => {
+  const c = document.getElementById('pd-carousel');
+  c.scrollBy({ left: c.offsetWidth * 0.85, behavior: 'smooth' });
+});
+
+// Carousel drag-to-scroll (desktop)
 (function() {
   const c = document.getElementById('pd-carousel');
   if (!c) return;
@@ -1016,6 +1092,16 @@ document.getElementById('pd-back').addEventListener('click', () => {
   c.addEventListener('mouseup', () => { down = false; c.classList.remove('grabbing'); });
   c.addEventListener('mousemove', e => { if (!down) return; e.preventDefault(); c.scrollLeft = sl - (e.pageX - c.offsetLeft - sx); });
 })();
+
+// Lightbox
+const lb = document.getElementById('pd-lightbox');
+document.getElementById('pd-track').addEventListener('click', e => {
+  if (e.target.tagName !== 'IMG') return;
+  document.getElementById('pd-lb-img').src = e.target.src.replace('w=800', 'w=1400');
+  lb.classList.add('on');
+});
+document.getElementById('pd-lb-close').addEventListener('click', () => lb.classList.remove('on'));
+lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('on'); });
 
 // Mobile: highlight play button when card is 50% in view
 if ('IntersectionObserver' in window) {
