@@ -519,23 +519,9 @@ body::before {
   font-size: clamp(44px, 13vw, 76px); line-height: .92; letter-spacing: .01em;
   margin-bottom: 22px;
 }
-.pd-info-card {
-  padding: 20px 18px; border-radius: 16px;
-  border: 1px solid rgba(255,122,26,.15);
-  background: rgba(255,122,26,.05);
-  margin-bottom: 28px;
-}
-.pd-client-label {
-  font-size: 9px; font-weight: 500; letter-spacing: .18em;
-  text-transform: uppercase; color: var(--a-photo); margin-bottom: 5px;
-}
-.pd-client-val {
-  font-size: 16px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 14px;
-}
-.pd-desc {
-  font-size: 14px; line-height: 1.75; color: rgba(240,236,228,.55);
-  border-top: 1px solid rgba(255,122,26,.1); padding-top: 14px;
-}
+#photo-detail .vid-proj-tag { color: var(--a-photo); }
+#photo-detail .vid-proj-meta span { border-color: rgba(255,122,26,.25); }
+#photo-detail .pd-proj-info { margin-bottom: 28px; }
 
 .pd-carousel-wrap { position: relative; }
 .pd-arrow {
@@ -915,12 +901,15 @@ body::before {
     Back
   </div>
   <div class="pd-content">
-    <div class="pd-tag" id="pd-tag"></div>
-    <h3 class="pd-title" id="pd-title"></h3>
-    <div class="pd-info-card">
-      <div class="pd-client-label">Client</div>
-      <div class="pd-client-val" id="pd-client"></div>
-      <p class="pd-desc" id="pd-desc"></p>
+    <div class="pd-proj-info">
+      <div class="vid-proj-tag" id="pd-tag"></div>
+      <h3 class="vid-proj-title" id="pd-title"></h3>
+      <p class="vid-proj-body" id="pd-desc"></p>
+      <div class="vid-proj-meta">
+        <span id="pd-client-pill"></span>
+        <span id="pd-format-pill"></span>
+        <span id="pd-result-pill"></span>
+      </div>
     </div>
     <div class="pd-carousel-wrap">
       <button class="pd-arrow pd-arrow-prev" id="pd-prev" aria-label="Previous">
@@ -1032,16 +1021,16 @@ document.querySelectorAll('.vid-proj-thumb').forEach(thumb => {
 
 // Photo projects data
 const photoProjects = [
-  { title: 'Mountain Series', tag: 'Landscape · Nature', client: 'Personal Project', desc: 'A personal series shot across alpine regions — chasing the light between peaks and clouds. Every frame tries to hold what a moment at altitude actually feels like.', imgs: ['https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=85','https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=85','https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=85'] },
-  { title: 'Urban Frame', tag: 'Architecture · Street', client: 'Personal Project', desc: 'Geometric compositions found in city infrastructure — lines, shadows and textures that most people walk past without noticing. Shot on a wide lens, post-processed for high contrast.', imgs: ['https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=800&q=85','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=85'] },
-  { title: 'Brand Visuals', tag: 'Product · Commercial', client: 'Placeholder Brand', desc: 'Commercial product photography for an e-commerce brand — clean backgrounds, controlled studio lighting and lifestyle context shots for web and social use.', imgs: ['https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=85','https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=85','https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=85'] },
-  { title: 'Forest Light', tag: 'Nature · Mood', client: 'Personal Project', desc: 'Golden hour filtering through dense canopy. This series is about the quality of light rather than the subject — fog, rays and silence. Shot on a single prime lens with no artificial light.', imgs: ['https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=85','https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=85'] },
-  { title: 'Open Horizons', tag: 'Nature · Wide', client: 'Personal Project', desc: 'Wide open landscapes shot across different seasons — the kind of frames that feel bigger than the print. Colour graded to hold the warmth of late afternoon.', imgs: ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=85','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85','https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=800&q=85'] },
-  { title: 'Human Stories', tag: 'Portrait · Lifestyle', client: 'Personal Project', desc: 'Environmental portraits shot with available light — the goal was to capture personality through posture and context, not just expression. Minimal direction given to each subject.', imgs: ['https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=85','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85','https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=85'] },
-  { title: 'Coastal Mood', tag: 'Coastal · Lifestyle', client: 'Personal Project', desc: 'A study of coastlines at different times of day — the tension between stillness and movement in water. Mostly handheld, mostly magic hour. Post-processing kept minimal to preserve the atmosphere.', imgs: ['https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=800&q=85','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=85','https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=800&q=85'] },
-  { title: 'On the Road', tag: 'Travel · Documentary', client: 'Personal Project', desc: 'Documentary-style travel photography from a road trip across three countries. Shot fast, edited slow — the priority was honest moments over composed ones.', imgs: ['https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=85','https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=85','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85'] },
-  { title: 'Still Life', tag: 'Still Life · Product', client: 'Personal Project', desc: 'Quiet compositions built around light and texture — objects arranged to find balance rather than symmetry. Part of an ongoing personal study in form and colour.', imgs: ['https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&q=85','https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=85','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=85'] },
-  { title: 'Street Stories', tag: 'Street · Documentary', client: 'Personal Project', desc: 'Street photography from urban environments — the unscripted, the incidental and the overlooked. Shot in continuous burst, one keeper per hundred frames.', imgs: ['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=85','https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=800&q=85','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85'] }
+  { title: 'Mountain Series', tag: 'Landscape · Nature', client: 'Personal Project', format: 'Fine Art Print', result: '18 shots', desc: 'A personal series shot across alpine regions — chasing the light between peaks and clouds. Every frame tries to hold what a moment at altitude actually feels like.', imgs: ['https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=85','https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=85','https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=85'] },
+  { title: 'Urban Frame', tag: 'Architecture · Street', client: 'Personal Project', format: 'Editorial', result: '22 shots', desc: 'Geometric compositions found in city infrastructure — lines, shadows and textures that most people walk past without noticing. Shot on a wide lens, post-processed for high contrast.', imgs: ['https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=800&q=85','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=85'] },
+  { title: 'Brand Visuals', tag: 'Product · Commercial', client: 'Placeholder Brand', format: 'E-commerce', result: '40 deliverables', desc: 'Commercial product photography for an e-commerce brand — clean backgrounds, controlled studio lighting and lifestyle context shots for web and social use.', imgs: ['https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=85','https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=85','https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=85'] },
+  { title: 'Forest Light', tag: 'Nature · Mood', client: 'Personal Project', format: 'Fine Art Print', result: '12 prints', desc: 'Golden hour filtering through dense canopy. This series is about the quality of light rather than the subject — fog, rays and silence. Shot on a single prime lens with no artificial light.', imgs: ['https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=85','https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=85'] },
+  { title: 'Open Horizons', tag: 'Nature · Wide', client: 'Personal Project', format: 'Social & Print', result: '24 shots', desc: 'Wide open landscapes shot across different seasons — the kind of frames that feel bigger than the print. Colour graded to hold the warmth of late afternoon.', imgs: ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=85','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85','https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=800&q=85'] },
+  { title: 'Human Stories', tag: 'Portrait · Lifestyle', client: 'Personal Project', format: 'Editorial', result: '30 portraits', desc: 'Environmental portraits shot with available light — the goal was to capture personality through posture and context, not just expression. Minimal direction given to each subject.', imgs: ['https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=85','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85','https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=85'] },
+  { title: 'Coastal Mood', tag: 'Coastal · Lifestyle', client: 'Personal Project', format: 'Social Media', result: '16 shots', desc: 'A study of coastlines at different times of day — the tension between stillness and movement in water. Mostly handheld, mostly magic hour. Post-processing kept minimal to preserve the atmosphere.', imgs: ['https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=800&q=85','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=85','https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=800&q=85'] },
+  { title: 'On the Road', tag: 'Travel · Documentary', client: 'Personal Project', format: 'Documentary', result: '3 countries', desc: 'Documentary-style travel photography from a road trip across three countries. Shot fast, edited slow — the priority was honest moments over composed ones.', imgs: ['https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=85','https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=85','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85'] },
+  { title: 'Still Life', tag: 'Still Life · Product', client: 'Personal Project', format: 'Studio', result: '20 shots', desc: 'Quiet compositions built around light and texture — objects arranged to find balance rather than symmetry. Part of an ongoing personal study in form and colour.', imgs: ['https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&q=85','https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=85','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=85'] },
+  { title: 'Street Stories', tag: 'Street · Documentary', client: 'Personal Project', format: 'Documentary', result: '28 shots', desc: 'Street photography from urban environments — the unscripted, the incidental and the overlooked. Shot in continuous burst, one keeper per hundred frames.', imgs: ['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=85','https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=800&q=85','https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=85'] }
 ];
 
 function revealPhotoGallery() {
@@ -1058,8 +1047,10 @@ document.querySelectorAll('.photo-item').forEach(item => {
     if (!proj) return;
     document.getElementById('pd-tag').textContent = proj.tag;
     document.getElementById('pd-title').textContent = proj.title;
-    document.getElementById('pd-client').textContent = proj.client;
     document.getElementById('pd-desc').textContent = proj.desc;
+    document.getElementById('pd-client-pill').textContent = 'Client: ' + proj.client;
+    document.getElementById('pd-format-pill').textContent = 'Format: ' + proj.format;
+    document.getElementById('pd-result-pill').textContent = 'Result: ' + proj.result;
     const track = document.getElementById('pd-track');
     track.innerHTML = proj.imgs.map(src => '<img src="' + src + '" alt=""/>').join('');
     document.getElementById('pd-carousel').scrollLeft = 0;
