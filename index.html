@@ -225,10 +225,10 @@ body::before {
 .card-overlay {
   position: absolute; inset: 0; z-index: 1; border-radius: inherit; pointer-events: none;
 }
-[data-id=about] .card-overlay { background: linear-gradient(to top, rgba(10,10,10,.85) 0%, rgba(200,192,176,.15) 50%, transparent 75%); }
-[data-id=work]  .card-overlay { background: linear-gradient(to top, rgba(11,26,46,.9) 0%, rgba(61,139,255,.15) 50%, transparent 75%); }
-[data-id=photo] .card-overlay { background: linear-gradient(to top, rgba(31,15,0,.9) 0%, rgba(255,122,26,.15) 50%, transparent 75%); }
-[data-id=video] .card-overlay { background: linear-gradient(to top, rgba(21,0,21,.9) 0%, rgba(192,60,255,.15) 50%, transparent 75%); }
+[data-id=about] .card-overlay { background: linear-gradient(to top, rgba(10,10,10,.92) 0%, rgba(200,192,176,.18) 50%, transparent 75%); }
+[data-id=work]  .card-overlay { background: linear-gradient(to top, rgba(11,26,46,.95) 0%, rgba(61,139,255,.18) 50%, transparent 75%); }
+[data-id=photo] .card-overlay { background: linear-gradient(to top, rgba(31,15,0,.95) 0%, rgba(255,122,26,.18) 50%, transparent 75%); }
+[data-id=video] .card-overlay { background: linear-gradient(to top, rgba(21,0,21,.95) 0%, rgba(192,60,255,.18) 50%, transparent 75%); }
 
 /* Glow */
 .card-glow {
@@ -268,6 +268,15 @@ body::before {
   color: rgba(240,236,228,.95);
   text-shadow: 0 2px 30px rgba(0,0,0,.8), 0 0 60px rgba(0,0,0,.5);
 }
+.card-desc {
+  display: block; font-family: 'DM Sans', sans-serif;
+  font-size: 10px; font-weight: 400; letter-spacing: .14em;
+  text-transform: uppercase; color: rgba(240,236,228,.5);
+  margin-top: 6px; text-align: center;
+  opacity: 0; transform: translateY(4px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+.card:hover .card-desc { opacity: 1; transform: translateY(0); }
 
 /* SECTION OVERLAY */
 #ov {
@@ -373,6 +382,76 @@ body::before {
   .sec { padding: 100px 60px 70px; max-width: 820px; margin: 0 auto; }
   .sec-h { font-size: clamp(52px,7vw,88px); }
   .sec-body { font-size: 16px; max-width: 520px; }
+  .vid-proj { grid-template-columns: 1fr 1fr; align-items: start; }
+}
+
+/* VIDEO SECTION */
+.vid-reel {
+  position: relative; width: 100%; padding-bottom: 56.25%;
+  margin: 28px 0 32px; border-radius: 16px; overflow: hidden;
+  border: 1px solid rgba(192,60,255,.2);
+}
+.vid-reel iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+.vid-projects { margin-top: 40px; display: flex; flex-direction: column; gap: 28px; }
+
+.vid-proj {
+  display: grid; grid-template-columns: 1fr; gap: 20px;
+  padding: 20px; border-radius: 18px;
+  border: 1px solid rgba(192,60,255,.1);
+  background: rgba(192,60,255,.03);
+}
+.vid-proj-thumb {
+  position: relative; width: 100%; padding-bottom: 56.25%;
+  border-radius: 12px; overflow: hidden; cursor: pointer; background: #0a0a0a;
+}
+.vid-proj-thumb img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; transition: transform .4s ease;
+}
+.vid-proj-thumb:hover img { transform: scale(1.03); }
+.vid-proj-thumb iframe {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  border: none; display: none;
+}
+.vid-proj-thumb.playing img { display: none; }
+.vid-proj-thumb.playing iframe { display: block; }
+.vid-proj-play {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.25); transition: background .25s ease;
+}
+.vid-proj-thumb:hover .vid-proj-play { background: rgba(0,0,0,.4); }
+.vid-proj-thumb.playing .vid-proj-play { display: none; }
+.vid-proj-play-btn {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: rgba(192,60,255,.25); border: 2px solid rgba(192,60,255,.5);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .2s ease, background .2s ease;
+}
+.vid-proj-thumb:hover .vid-proj-play-btn,
+.vid-proj-thumb.active .vid-proj-play-btn {
+  transform: scale(1.12); background: rgba(192,60,255,.5);
+}
+.vid-proj-play-btn svg { width: 22px; height: 22px; fill: #f0ece4; margin-left: 3px; }
+
+.vid-proj-tag {
+  font-size: 9px; font-weight: 500; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--a-video); margin-bottom: 10px;
+}
+.vid-proj-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(22px, 5vw, 34px); letter-spacing: .04em; line-height: 1;
+  margin-bottom: 12px;
+}
+.vid-proj-body {
+  font-size: 13px; line-height: 1.7;
+  color: rgba(240,236,228,.45); margin-bottom: 16px;
+}
+.vid-proj-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.vid-proj-meta span {
+  font-size: 10px; padding: 4px 11px; border-radius: 20px;
+  border: 1px solid rgba(192,60,255,.2); color: rgba(240,236,228,.45);
 }
 </style>
 </head>
@@ -421,7 +500,7 @@ body::before {
       </div>
       <div class="card-overlay"></div>
       <div class="card-glow"></div>
-      <div class="card-name"><div class="card-name-text">VIDEO</div></div>
+      <div class="card-name"><div class="card-name-text">VIDEO</div><div class="card-desc">Reels · Films · AI Voice</div></div>
     </div>
 
     <!-- PHOTOGRAPHY -->
@@ -440,7 +519,7 @@ body::before {
       </div>
       <div class="card-overlay"></div>
       <div class="card-glow"></div>
-      <div class="card-name"><div class="card-name-text">PHOTO</div></div>
+      <div class="card-name"><div class="card-name-text">PHOTO</div><div class="card-desc">Brand · Product · Lifestyle</div></div>
     </div>
 
   </div>
@@ -454,7 +533,7 @@ body::before {
       </div>
       <div class="card-overlay"></div>
       <div class="card-glow"></div>
-      <div class="card-name"><div class="card-name-text">WORK</div></div>
+      <div class="card-name"><div class="card-name-text">WORK</div><div class="card-desc">Strategy · Cases · Results</div></div>
     </div>
 
     <!-- ABOUT ME -->
@@ -464,7 +543,7 @@ body::before {
       </div>
       <div class="card-overlay"></div>
       <div class="card-glow"></div>
-      <div class="card-name"><div class="card-name-text">ABOUT ME</div></div>
+      <div class="card-name"><div class="card-name-text">ABOUT ME</div><div class="card-desc">Gold Coast · Creator · Operator</div></div>
     </div>
 
   </div>
@@ -517,12 +596,132 @@ body::before {
   <div class="sec" id="s-video">
     <div class="sec-line"></div><div class="sec-tag">Videography</div>
     <h2 class="sec-h">Stories<br>in motion.</h2>
-    <p class="sec-body">From concept to final cut — I handle production, storytelling, and post. Social-first video that drives real engagement on Instagram and TikTok.</p>
+
+    <!-- Main reel autoplay -->
+    <div class="vid-reel">
+      <iframe src="https://www.youtube.com/embed/HADSJUyu3Rc?autoplay=1&mute=1&loop=1&playlist=HADSJUyu3Rc&controls=1&rel=0&modestbranding=1&playsinline=1"
+        allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <!-- Info grid -->
     <div class="sec-grid">
       <div class="sec-item"><div class="sec-item-label">Format</div><div class="sec-item-val">Reels / TikTok</div><div class="sec-item-desc">Short-form, high-retention</div></div>
       <div class="sec-item"><div class="sec-item-label">Pipeline</div><div class="sec-item-val">End-to-End</div><div class="sec-item-desc">Concept → shoot → edit → post</div></div>
       <div class="sec-item"><div class="sec-item-label">Tools</div><div class="sec-item-val">AI + Traditional</div><div class="sec-item-desc">ElevenLabs, Premiere, stock</div></div>
       <div class="sec-item"><div class="sec-item-label">Philosophy</div><div class="sec-item-val">Hook in 2s</div><div class="sec-item-desc">Narrative-first, always.</div></div>
+    </div>
+
+    <!-- Project cards -->
+    <div class="vid-projects">
+
+      <div class="vid-proj">
+        <div class="vid-proj-thumb" data-yt="HADSJUyu3Rc">
+          <img src="https://img.youtube.com/vi/HADSJUyu3Rc/hqdefault.jpg" alt="Project 1"/>
+          <iframe title="Project 1"></iframe>
+          <div class="vid-proj-play"><div class="vid-proj-play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        </div>
+        <div class="vid-proj-info">
+          <div class="vid-proj-tag">Reels · Brand · Social</div>
+          <h3 class="vid-proj-title">Social Reel Campaign</h3>
+          <p class="vid-proj-body">Full production campaign for a lifestyle brand — concept, shoot, edit and post-production handled end-to-end. Optimized for maximum retention on Instagram and TikTok.</p>
+          <div class="vid-proj-meta">
+            <span>Client: Placeholder Brand</span>
+            <span>Format: Short-form Reel</span>
+            <span>Result: 2M+ views</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="vid-proj">
+        <div class="vid-proj-thumb" data-yt="HADSJUyu3Rc">
+          <img src="https://img.youtube.com/vi/HADSJUyu3Rc/hqdefault.jpg" alt="Project 2"/>
+          <iframe title="Project 2"></iframe>
+          <div class="vid-proj-play"><div class="vid-proj-play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        </div>
+        <div class="vid-proj-info">
+          <div class="vid-proj-tag">Film · Commercial · Brand</div>
+          <h3 class="vid-proj-title">Brand Film</h3>
+          <p class="vid-proj-body">Cinematic brand film — from pre-production to final color grade. Storytelling approach designed to connect emotionally with the audience and drive brand recall.</p>
+          <div class="vid-proj-meta">
+            <span>Client: Placeholder Brand</span>
+            <span>Format: Brand Film</span>
+            <span>Result: 500K reach</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="vid-proj">
+        <div class="vid-proj-thumb" data-yt="HADSJUyu3Rc">
+          <img src="https://img.youtube.com/vi/HADSJUyu3Rc/hqdefault.jpg" alt="Project 3"/>
+          <iframe title="Project 3"></iframe>
+          <div class="vid-proj-play"><div class="vid-proj-play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        </div>
+        <div class="vid-proj-info">
+          <div class="vid-proj-tag">TikTok · E-commerce · Launch</div>
+          <h3 class="vid-proj-title">Product Launch</h3>
+          <p class="vid-proj-body">Multi-video product launch strategy for an e-commerce brand. Hook-driven scripts, fast cuts, and on-brand visuals that drove measurable sales and engagement.</p>
+          <div class="vid-proj-meta">
+            <span>Client: Placeholder Brand</span>
+            <span>Format: TikTok Series</span>
+            <span>Result: 340% engagement</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="vid-proj">
+        <div class="vid-proj-thumb" data-yt="HADSJUyu3Rc">
+          <img src="https://img.youtube.com/vi/HADSJUyu3Rc/hqdefault.jpg" alt="Project 4"/>
+          <iframe title="Project 4"></iframe>
+          <div class="vid-proj-play"><div class="vid-proj-play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        </div>
+        <div class="vid-proj-info">
+          <div class="vid-proj-tag">Documentary · Story · Long-form</div>
+          <h3 class="vid-proj-title">Documentary Short</h3>
+          <p class="vid-proj-body">Short documentary capturing a personal story behind a brand. Interviews, B-roll, original score and color grading to create an authentic, emotional narrative.</p>
+          <div class="vid-proj-meta">
+            <span>Client: Placeholder Brand</span>
+            <span>Format: Documentary</span>
+            <span>Result: 1M+ views</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="vid-proj">
+        <div class="vid-proj-thumb" data-yt="HADSJUyu3Rc">
+          <img src="https://img.youtube.com/vi/HADSJUyu3Rc/hqdefault.jpg" alt="Project 5"/>
+          <iframe title="Project 5"></iframe>
+          <div class="vid-proj-play"><div class="vid-proj-play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        </div>
+        <div class="vid-proj-info">
+          <div class="vid-proj-tag">AI · Voiceover · Series</div>
+          <h3 class="vid-proj-title">AI Voice Narration Series</h3>
+          <p class="vid-proj-body">12-episode video series using ElevenLabs AI voiceover combined with motion graphics and footage. Scalable content production with consistent brand voice.</p>
+          <div class="vid-proj-meta">
+            <span>Client: Placeholder Brand</span>
+            <span>Format: Series</span>
+            <span>Result: 12 episodes</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="vid-proj">
+        <div class="vid-proj-thumb" data-yt="HADSJUyu3Rc">
+          <img src="https://img.youtube.com/vi/HADSJUyu3Rc/hqdefault.jpg" alt="Project 6"/>
+          <iframe title="Project 6"></iframe>
+          <div class="vid-proj-play"><div class="vid-proj-play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        </div>
+        <div class="vid-proj-info">
+          <div class="vid-proj-tag">Live · Event · Coverage</div>
+          <h3 class="vid-proj-title">Event Coverage</h3>
+          <p class="vid-proj-body">Live event video coverage for 3 brand activations — same-day turnaround edits, highlight reels and social cuts delivered within hours of each event.</p>
+          <div class="vid-proj-meta">
+            <span>Client: Placeholder Brand</span>
+            <span>Format: Event Reel</span>
+            <span>Result: 3 events</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -601,6 +800,29 @@ function goBack() {
   }, 500);
 }
 secBack.addEventListener('click', goBack);
+
+// Project video click-to-play
+document.querySelectorAll('.vid-proj-thumb').forEach(thumb => {
+  thumb.addEventListener('click', () => {
+    if (thumb.classList.contains('playing')) return;
+    const ytId = thumb.dataset.yt;
+    const iframe = thumb.querySelector('iframe');
+    iframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0&modestbranding=1`;
+    thumb.classList.add('playing');
+  });
+});
+
+// Mobile: highlight play button when card is 50% in view
+if ('IntersectionObserver' in window) {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      const btn = e.target.querySelector('.vid-proj-play-btn');
+      if (btn) btn.style.background = e.isIntersecting
+        ? 'rgba(192,60,255,.55)' : 'rgba(192,60,255,.25)';
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.vid-proj-thumb').forEach(t => obs.observe(t));
+}
 </script>
 </body>
 </html>
