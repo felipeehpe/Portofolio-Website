@@ -87,3 +87,30 @@ Tell Claude in plain English what you want. Be specific:
 - "Replace the photo carousel images with these links: [link1] [link2]"
 
 Claude will edit `index.html`, push to GitHub, and Netlify auto-deploys in ~1 minute.
+
+---
+
+## Token Efficiency Rules (from claude-token-efficient)
+Source: https://github.com/drona23/claude-token-efficient
+
+- **Read before writing** — understand the file fully before making any edit
+- **Targeted edits only** — modify only what is needed, never rewrite full files
+- **Single read per file** — read each file once per session unless it changed
+- **No preamble, no fluff** — responses go straight to the solution
+- **No over-engineering** — simplest solution wins; no unnecessary abstractions
+- **Validate before done** — check edits are correct before pushing
+- **ASCII-compatible output** — avoid special characters that break parsers
+- **CLAUDE.md saves tokens at scale** — persistent context avoids re-explaining every session
+
+---
+
+## MarkItDown (from microsoft/markitdown)
+Source: https://github.com/microsoft/markitdown
+
+Tool that converts files (PDF, Word, Excel, PowerPoint, images, HTML) to Markdown for LLM processing.
+
+**Use case for this project:**
+- Have a PDF portfolio, brief, or project doc? Run through MarkItDown, paste output to Claude, say "use this to update section X"
+
+**Install:** `pip install 'markitdown[all]'`
+**CLI:** `markitdown yourfile.pdf -o output.md`
