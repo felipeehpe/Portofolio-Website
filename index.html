@@ -577,6 +577,80 @@ body::before {
   .pd-arrow-prev { left: -20px; }
   .pd-arrow-next { right: -20px; }
 }
+
+/* ── WORK SECTION ─────────────────────────────── */
+.work-title-accent {
+  background: linear-gradient(90deg,#3d8bff,rgba(61,139,255,.5));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.work-divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(to right,transparent,rgba(61,139,255,.18),transparent);
+  margin: 32px 0 26px;
+}
+.work-sub-label {
+  font-size: 9px; font-weight: 500; letter-spacing: .22em;
+  text-transform: uppercase; color: rgba(240,236,228,.28); margin-bottom: 16px;
+}
+/* Process cards */
+.work-process { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 4px; }
+.wp-card {
+  border-radius: 16px; padding: 18px 15px 15px;
+  min-height: 170px; display: flex; flex-direction: column; justify-content: space-between;
+  background: rgba(240,236,228,.03); border: 1px solid rgba(240,236,228,.07);
+}
+.wp-card.wp-hi {
+  background: linear-gradient(140deg,rgba(8,40,110,.9) 0%,rgba(5,12,32,.95) 100%);
+  border-color: rgba(61,139,255,.22);
+}
+.wp-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.wp-num { font-size: 10px; font-weight: 500; letter-spacing: .1em; color: rgba(61,139,255,.7); }
+.wp-dots-row { display: flex; gap: 5px; }
+.wp-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(240,236,228,.12); }
+.wp-dot.f { background: rgba(61,139,255,.8); }
+.wp-card-h {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(22px, 6vw, 34px); letter-spacing: .04em; line-height: 1; margin-top: 10px;
+}
+.wp-card-p {
+  font-size: 9px; line-height: 1.65; letter-spacing: .04em; text-transform: uppercase;
+  color: rgba(240,236,228,.38); margin-top: 10px;
+}
+.wp-card.wp-hi .wp-card-p { color: rgba(240,236,228,.58); }
+/* Trusted by */
+.tb-wrap { overflow: hidden; position: relative; padding: 6px 0; }
+.tb-row { display: flex; gap: 50px; align-items: center; animation: tbScroll 28s linear infinite; width: max-content; }
+.tb-row:hover { animation-play-state: paused; }
+@keyframes tbScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.tb-item {
+  font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: .14em;
+  color: rgba(240,236,228,.2); white-space: nowrap; transition: color .3s; cursor: default;
+}
+.tb-item:hover { color: rgba(240,236,228,.5); }
+.tb-fade-l { position: absolute; top:0; left:0; height:100%; width:60px; background: linear-gradient(to right,#080808,transparent); pointer-events:none; z-index:1; }
+.tb-fade-r { position: absolute; top:0; right:0; height:100%; width:60px; background: linear-gradient(to left,#080808,transparent); pointer-events:none; z-index:1; }
+/* Testimonials */
+.testi-outer { overflow: hidden; }
+.testi-track { display: flex; transition: transform .65s cubic-bezier(.16,1,.3,1); }
+.testi-slide { flex-shrink:0; width:100%; padding: 22px 4px 32px; text-align: center; }
+.testi-q { font-size:44px; line-height:.6; color:var(--a-work); opacity:.3; font-family:Georgia,serif; display:block; margin-bottom:12px; }
+.testi-body { font-size:13px; line-height:1.8; color:rgba(240,236,228,.65); max-width:420px; margin:0 auto 18px; font-style:italic; }
+.testi-author { font-size:13px; font-weight:600; margin-bottom:3px; }
+.testi-role { font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:rgba(240,236,228,.3); margin-bottom:5px; }
+.testi-co { font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:.2em; color:var(--a-work); opacity:.6; }
+.testi-ui { display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:6px; }
+.t-dots { display:flex; gap:6px; }
+.t-dot { width:5px; height:5px; border-radius:50%; background:rgba(240,236,228,.15); transition:background .3s,transform .3s; }
+.t-dot.on { background:var(--a-work); transform:scale(1.35); }
+.t-btns { display:flex; gap:8px; }
+.t-btn {
+  width:33px; height:33px; border-radius:50%;
+  background:rgba(61,139,255,.07); border:1px solid rgba(61,139,255,.18);
+  color:rgba(240,236,228,.45); cursor:pointer;
+  display:flex; align-items:center; justify-content:center; transition:all .2s;
+}
+.t-btn:hover { background:rgba(61,139,255,.2); border-color:rgba(61,139,255,.5); color:#f0ece4; }
+.t-btn svg { width:14px; height:14px; stroke:currentColor; stroke-width:2; fill:none; }
 </style>
 </head>
 <body>
@@ -696,13 +770,141 @@ body::before {
 
   <div class="sec" id="s-work">
     <div class="sec-line"></div><div class="sec-tag">Work</div>
-    <h2 class="sec-h">Built to<br>convert.</h2>
-    <p class="sec-body">From e-bike brand marketing to AI automation and digital product development — I build things that move people and move numbers.</p>
-    <div class="sec-grid">
-      <div class="sec-item"><div class="sec-item-label">01</div><div class="sec-item-val">Project 1</div><div class="sec-item-desc">Coming soon</div></div>
-      <div class="sec-item"><div class="sec-item-label">02</div><div class="sec-item-val">Project 2</div><div class="sec-item-desc">Coming soon</div></div>
-      <div class="sec-item" style="grid-column:1/-1"><div class="sec-item-label">03</div><div class="sec-item-val">Project 3</div><div class="sec-item-desc">Coming soon</div></div>
+    <h2 class="sec-h">Elevate<br><span class="work-title-accent">Your Vision.</span></h2>
+    <p class="sec-body">From brand building to AI-powered automation — strategy, production and growth that moves people and moves numbers.</p>
+
+    <div class="work-divider"></div>
+    <div class="work-sub-label">How I work</div>
+    <div class="work-process">
+
+      <div class="wp-card wp-hi">
+        <div>
+          <div class="wp-top">
+            <span class="wp-num">/ 01</span>
+            <div class="wp-dots-row"><span class="wp-dot f"></span><span class="wp-dot"></span><span class="wp-dot"></span><span class="wp-dot"></span></div>
+          </div>
+          <div class="wp-card-h">Discover</div>
+        </div>
+        <p class="wp-card-p">Every project starts with understanding your goals, brand, target audience and specific requirements.</p>
+      </div>
+
+      <div class="wp-card">
+        <div>
+          <div class="wp-top">
+            <span class="wp-num">/ 02</span>
+            <div class="wp-dots-row"><span class="wp-dot f"></span><span class="wp-dot f"></span><span class="wp-dot"></span><span class="wp-dot"></span></div>
+          </div>
+          <div class="wp-card-h">Strategy</div>
+        </div>
+        <p class="wp-card-p">I craft a content and campaign plan aligned with your growth objectives and audience behaviour.</p>
+      </div>
+
+      <div class="wp-card">
+        <div>
+          <div class="wp-top">
+            <span class="wp-num">/ 03</span>
+            <div class="wp-dots-row"><span class="wp-dot f"></span><span class="wp-dot f"></span><span class="wp-dot f"></span><span class="wp-dot"></span></div>
+          </div>
+          <div class="wp-card-h">Create</div>
+        </div>
+        <p class="wp-card-p">Video, photo, design and AI automation — full execution end-to-end with consistent quality.</p>
+      </div>
+
+      <div class="wp-card">
+        <div>
+          <div class="wp-top">
+            <span class="wp-num">/ 04</span>
+            <div class="wp-dots-row"><span class="wp-dot f"></span><span class="wp-dot f"></span><span class="wp-dot f"></span><span class="wp-dot f"></span></div>
+          </div>
+          <div class="wp-card-h">Deliver</div>
+        </div>
+        <p class="wp-card-p">Launch, track and optimise. Results measured, work keeps performing long after delivery.</p>
+      </div>
+
     </div>
+
+    <div class="work-divider"></div>
+    <div class="work-sub-label">Trusted by</div>
+    <div class="tb-wrap">
+      <div class="tb-fade-l"></div>
+      <div class="tb-fade-r"></div>
+      <div class="tb-row">
+        <span class="tb-item">Placeholder Brand</span>
+        <span class="tb-item">Gold Coast Media</span>
+        <span class="tb-item">E-Bike Co.</span>
+        <span class="tb-item">Social Studio</span>
+        <span class="tb-item">Digital Agency</span>
+        <span class="tb-item">Lifestyle Brand</span>
+        <span class="tb-item">Tech Startup</span>
+        <span class="tb-item">Creative Lab</span>
+        <span class="tb-item">Placeholder Brand</span>
+        <span class="tb-item">Gold Coast Media</span>
+        <span class="tb-item">E-Bike Co.</span>
+        <span class="tb-item">Social Studio</span>
+        <span class="tb-item">Digital Agency</span>
+        <span class="tb-item">Lifestyle Brand</span>
+        <span class="tb-item">Tech Startup</span>
+        <span class="tb-item">Creative Lab</span>
+      </div>
+    </div>
+
+    <div class="work-divider"></div>
+    <div class="work-sub-label">What they say</div>
+    <div class="testi-outer">
+      <div class="testi-track" id="testi-track">
+
+        <div class="testi-slide">
+          <span class="testi-q">"</span>
+          <p class="testi-body">Felipe brought a level of creativity and strategic thinking that transformed our brand's social presence. The results exceeded our expectations every time.</p>
+          <div class="testi-author">Sarah M.</div>
+          <div class="testi-role">Marketing Director</div>
+          <div class="testi-co">Placeholder Brand</div>
+        </div>
+
+        <div class="testi-slide">
+          <span class="testi-q">"</span>
+          <p class="testi-body">The video content Felipe produced for our product launch drove a 3× increase in engagement within the first week. Incredible eye for storytelling.</p>
+          <div class="testi-author">James R.</div>
+          <div class="testi-role">Founder & CEO</div>
+          <div class="testi-co">E-Bike Co.</div>
+        </div>
+
+        <div class="testi-slide">
+          <span class="testi-q">"</span>
+          <p class="testi-body">Working with Felipe on our content strategy was seamless. He understood our audience immediately and delivered content that genuinely resonated.</p>
+          <div class="testi-author">Mia T.</div>
+          <div class="testi-role">Brand Manager</div>
+          <div class="testi-co">Social Studio</div>
+        </div>
+
+        <div class="testi-slide">
+          <span class="testi-q">"</span>
+          <p class="testi-body">From concept to final delivery, Felipe handled everything professionally. The AI automation workflows he built saved us dozens of hours every month.</p>
+          <div class="testi-author">Carlos A.</div>
+          <div class="testi-role">Operations Manager</div>
+          <div class="testi-co">Digital Agency</div>
+        </div>
+
+        <div class="testi-slide">
+          <span class="testi-q">"</span>
+          <p class="testi-body">The photography and videography Felipe delivered for our brand was exactly the cinematic quality we needed. Would hire again without hesitation.</p>
+          <div class="testi-author">Lena K.</div>
+          <div class="testi-role">Creative Director</div>
+          <div class="testi-co">Lifestyle Brand</div>
+        </div>
+
+      </div>
+    </div>
+    <div class="testi-ui">
+      <div class="t-dots" id="t-dots">
+        <div class="t-dot on"></div><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div>
+      </div>
+      <div class="t-btns">
+        <button class="t-btn" id="t-prev"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="t-btn" id="t-next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+    </div>
+
   </div>
 
   <div class="sec" id="s-photo">
@@ -1093,6 +1295,33 @@ document.getElementById('pd-track').addEventListener('click', e => {
 });
 document.getElementById('pd-lb-close').addEventListener('click', () => lb.classList.remove('on'));
 lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('on'); });
+
+// Testimonials carousel
+(function() {
+  const track = document.getElementById('testi-track');
+  if (!track) return;
+  const slides = track.querySelectorAll('.testi-slide');
+  const dots = document.querySelectorAll('#t-dots .t-dot');
+  let cur = 0, timer;
+  function goTo(n) {
+    cur = (n + slides.length) % slides.length;
+    track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+    dots.forEach((d, i) => d.classList.toggle('on', i === cur));
+  }
+  function autoRun() { timer = setTimeout(() => { goTo(cur + 1); autoRun(); }, 6500); }
+  function reset() { clearTimeout(timer); autoRun(); }
+  document.getElementById('t-prev').addEventListener('click', () => { goTo(cur - 1); reset(); });
+  document.getElementById('t-next').addEventListener('click', () => { goTo(cur + 1); reset(); });
+  // touch swipe
+  let tx = 0;
+  const outer = track.parentElement;
+  outer.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  outer.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 40) { goTo(dx < 0 ? cur + 1 : cur - 1); reset(); }
+  }, { passive: true });
+  autoRun();
+})();
 
 // Mobile: highlight play button when card is 50% in view
 if ('IntersectionObserver' in window) {
