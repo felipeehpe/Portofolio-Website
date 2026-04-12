@@ -114,3 +114,31 @@ Tool that converts files (PDF, Word, Excel, PowerPoint, images, HTML) to Markdow
 
 **Install:** `pip install 'markitdown[all]'`
 **CLI:** `markitdown yourfile.pdf -o output.md`
+
+---
+
+## Content Update System
+
+All site content lives in `CONTENT.md` (same folder as index.html).
+
+### To update content:
+1. Open `CONTENT.md` in VS Code
+2. Replace any value after the colon with your real content
+3. Save the file
+4. Tell Claude: **"apply CONTENT.md to the site"**
+5. Claude reads `CONTENT.md` → edits `index.html` → pushes → live in ~1 min
+
+### What's in CONTENT.md:
+| Section | Fields |
+|---------|--------|
+| Personal Info | Name, role, bio, photo URL, WhatsApp, phone, email |
+| Hero | YouTube video ID |
+| Video Section | Main reel ID + 6 projects (title, tag, YT ID, client, format, result, desc) |
+| Photography | 10 projects (title, tag, client, format, result, desc, 3 images + thumb) |
+| Work / Trusted By | Up to 8 brand names |
+| Work / Testimonials | Up to 5 quotes (quote, author, role, company) |
+
+### Image URLs:
+- Google Drive: Share file → "Anyone with link" → use `https://drive.google.com/uc?id=FILE_ID`
+- Imgur: Upload → right-click image → Copy image address
+- Any direct `.jpg` / `.png` / `.webp` URL works
